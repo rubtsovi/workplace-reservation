@@ -1,0 +1,13 @@
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$font-families: (
+    "Muli": (
+        $font-weight-light: "Muli-Light",
+        $font-weight-normal: "muli-regular",
+        $font-weight-bold: "Muli-ExtraBold",
+    ),
+);
+
+$font-family-base: "Muli";

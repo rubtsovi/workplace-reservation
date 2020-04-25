@@ -63,7 +63,7 @@ class DefaultController extends AbstractController
             (new ModuleLink())
                 ->setTitle('Wyposażenie')
                 ->setIcon('devices')
-                ->setUrl('#')
+                ->setUrl($this->generateUrl('equipment_list'))
                 ->setRole(User::ADMIN)
         );
         $links->add(

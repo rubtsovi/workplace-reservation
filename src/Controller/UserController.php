@@ -25,7 +25,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/", name="user_list")
      * @Route("/user/show/{id}/", name="single_user_show")
-     * @Route("/app/user/add/", name="add_user_view")
+     * @Route("/user/add/", name="add_user_view")
      */
     public function index(Request $request)
     {
@@ -99,7 +99,7 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return new Response('OK');
+            return new Response('Użytkownik został pomyślnie dodany');
         } catch (\Exception $e) {
             return new Response('Użytkownik o danym adresie email już istnieje', Response::HTTP_BAD_REQUEST);
         }

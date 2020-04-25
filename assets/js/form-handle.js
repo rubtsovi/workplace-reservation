@@ -22,7 +22,7 @@ export async function sendFormData(form) {
         .then((text) => {
             responce = {
                 ok: true,
-                message: "Użytkownik dodany pomyślnie",
+                message: text,
             };
         })
         .catch((e) => {

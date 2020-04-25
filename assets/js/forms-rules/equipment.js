@@ -1,24 +1,22 @@
-export const userFormRules = {
+export const equipmentFormRules = {
     rules: {
-        firstName: {
+        type: {
+            required: true,
+        },
+        model: {
             required: true,
             minlength: 3,
         },
-        lastName: {
+        signature: {
             required: true,
-            minlength: 3,
         },
-        email: {
+        buyYear: {
             required: true,
-            email: true,
+            digits: true,
         },
-        phone: {
+        value: {
             required: true,
-            phonePL: true,
-        },
-        password: {
-            required: true,
-            minlength: 8,
+            number: true,
         },
         description: {},
     },

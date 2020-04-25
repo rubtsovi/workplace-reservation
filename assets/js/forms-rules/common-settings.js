@@ -3,6 +3,7 @@ import { router } from "jqueryrouter";
 import BodyElementsControl from "../body-elements-control";
 
 export const commonValidatorSettings = {
+    // debug: true,
     validClass: "is-valid",
     errorClass: "invalid-feedback",
     errorElement: "div",
@@ -16,8 +17,8 @@ export const commonValidatorSettings = {
     submitHandler: (form) => {
         sendFormData(form).then((res) => {
             if (res.ok) {
-                router.set("/app/user/");
-                BodyElementsControl.addAppMessage("success", "Użytkownik został dodany pomyślnie");
+                router.set(form.dataset.afterSuccessUrl);
+                BodyElementsControl.addAppMessage("success", res.message);
             }
         });
     },

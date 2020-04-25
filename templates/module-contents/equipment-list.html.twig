@@ -1,0 +1,41 @@
+<div class="container">
+	<a href="/app/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	{% if equipments.items | length %}
+		<div id="equipment-list" class="bs-grid-table">
+			<div class="row bs-grid-table-header d-none d-md-flex">
+				<div class="col-1 py-2 text-uppercase text-center">
+					Nr
+				</div>
+				<div class="col-11 col-md py-2 text-uppercase">
+					Model i Rodzaj
+				</div>
+				<div class="col-11 offset-1 col-md-2 offset-md-0 py-2 text-uppercase">
+					Miejsce pracy
+				</div>
+				<div class="col-11 offset-1 col-md-3 offset-md-0 py-2 text-uppercase">
+					Akcje
+				</div>
+			</div>
+			{% for equipment in equipments.items %}
+				{% include "../equipment/single-equipment-row.html.twig" %}
+			{% endfor %}
+		</div>
+		{% if equipments.total_count > 10 %}
+			<div class="py-5 text-center">
+				<button data-next-page="{{ equipments.current_page_number + 1 }}" class="show-more-equipments rounded-pill btn btn-outline-secondary">
+					Pokaż więcej
+				</button>
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="alert alert-info">
+			Nie dodano żadnego wyposażenia.&nbsp;
+			<a data-router href="/app/equipment/add/">
+				Dodaj
+			</a>
+		</div>
+	{% endif %}
+</div>

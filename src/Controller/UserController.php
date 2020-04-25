@@ -32,7 +32,6 @@ class UserController extends AbstractController
         return $this->render('default/index.html.twig', [
             'view_block_name' => 'user_list',
             'header_title' => 'Pracownicy',
-            'users' => $this->getUsers(),
         ]);
     }
 
@@ -45,6 +44,10 @@ class UserController extends AbstractController
             $this->createAccessDeniedException();
         }
 
+        if (!$this->isGranted(User::ADMIN)) {
+            return new Response('Nie masz uprawnień!', Response::HTTP_FORBIDDEN);
+        }
+
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
         return new Response($this->serializer->serialize($user, 'json'));
@@ -53,15 +56,19 @@ class UserController extends AbstractController
     /**
      * @Route("/api/get-user-list/", name="get_user_api")
      */
-    public function getUsers(?Request $request = null)
+    public function getUsers(Request $request)
     {
-        $users = $this->getDoctrine()->getRepository(User::class)->findAllExceptAdmin();
-
-        if (!is_null($request) && $request->isXmlHttpRequest()) {
-            return new Response($this->serializer->serialize($users, 'json'));
+        if (!$request->isXmlHttpRequest()) {
+            $this->createAccessDeniedException();
         }
 
-        return $users;
+        if (!$this->isGranted(User::ADMIN)) {
+            return new Response('Nie masz uprawnień!', Response::HTTP_FORBIDDEN);
+        }
+
+        $users = $this->getDoctrine()->getRepository(User::class)->findAllExceptAdmin();
+
+        return new Response($this->serializer->serialize($users, 'json'));
     }
 
     /**

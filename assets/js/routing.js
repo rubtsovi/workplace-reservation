@@ -5,6 +5,7 @@ import { userFormRules, commonValidatorSettings } from "./forms-rules";
 
 let routerLinks = $("a[data-router]");
 const $routerOutlet = $("#router-outlet");
+let availableModules;
 
 route("/app/user/", ({ route }) => {
     BodyElementsControl.showLoader();
@@ -16,6 +17,9 @@ route("/app/user/", ({ route }) => {
         },
     })
         .then((res) => {
+            if (!res.ok) {
+                throw res.text();
+            }
             return res.json();
         })
         .then((data) => {
@@ -25,8 +29,11 @@ route("/app/user/", ({ route }) => {
             $routerOutlet.html(userList({ users: data }));
             BodyElementsControl.showAddBtn(`${route}add/`);
         })
-        .catch((err) => {
-            console.error(err);
+        .catch((e) => {
+            e.then((err) => {
+                BodyElementsControl.addAppMessage("error", err);
+                router.set("/app/");
+            });
         });
 });
 
@@ -50,6 +57,10 @@ route("/app/user/show/:userId/", ({ route }, { userId }) => {
         },
     })
         .then((res) => {
+            if (!res.ok) {
+                throw res.text();
+            }
+
             return res.json();
         })
         .then((user) => {
@@ -57,6 +68,12 @@ route("/app/user/show/:userId/", ({ route }, { userId }) => {
             BodyElementsControl.setHeaderText("Pracownicy");
             BodyElementsControl.clearDescription();
             $routerOutlet.html(singleUser({ user }));
+        })
+        .catch((e) => {
+            e.then((err) => {
+                BodyElementsControl.addAppMessage("error", err);
+                router.set("/app/");
+            });
         });
 });
 
@@ -64,8 +81,24 @@ route("/app/", ({ route }) => {
     BodyElementsControl.hideAddBtn();
     BodyElementsControl.showLoader();
     BodyElementsControl.setHeaderText("Witaj...");
-    $routerOutlet.html(appDashboard());
-    BodyElementsControl.hideLoader();
+    if (typeof availableModules !== "undefined") {
+        $routerOutlet.html(appDashboard({ available_modules: availableModules }));
+        BodyElementsControl.hideLoader();
+        return true;
+    }
+
+    fetch("/app/api/get-dashboard-links/", {
+        method: "get",
+        credentials: "same-origin",
+    })
+        .then((res) => {
+            return res.json();
+        })
+        .then((links) => {
+            availableModules = links;
+            $routerOutlet.html(appDashboard({ available_modules: availableModules }));
+            BodyElementsControl.hideLoader();
+        });
 });
 
 router.init();

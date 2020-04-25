@@ -1,47 +1,21 @@
 <nav id="main-view-navigation" class="container py-5">
-	<h4>Menu</h4>
+	<h4>
+		Menu
+	</h4>
 	<ul class="row my-n3 list-unstyled">
-		<li class="py-3 col-12 col-sm-6 col-lg-4">
-			<div class="nav-tile">
-				<div class="nav-tile-outer border d-flex flex-column justify-content-center align-items-center p-3">
+		{% for module in available_modules %}
+			<li class="py-3 col-12 col-sm-6 col-lg-4">
+				<div class="nav-tile">
+					<div class="nav-tile-outer border d-flex flex-column justify-content-center align-items-center p-3">
 
-					<i class="display-3 text-primary mb-3 icon icon-access_time"></i>
+						<i class="display-3 text-primary mb-3 icon icon-{{ module.icon }}"></i>
 
-					<a class="h5 mb-0 stretched-link" href="#">Rezerwacje</a>
+						<a class="h5 mb-0 stretched-link" data-router href="{{ module.url }}">
+							{{ module.title }}
+						</a>
+					</div>
 				</div>
-			</div>
-		</li>
-		<li class="py-3 col-12 col-sm-6 col-lg-4">
-			<div class="nav-tile">
-				<div class="nav-tile-outer border d-flex flex-column justify-content-center align-items-center p-3">
-
-					<i class="display-3 text-primary mb-3 icon icon-apps"></i>
-					<a class="h5 mb-0 stretched-link" href="#">Miejsca pracy</a>
-				</div>
-			</div>
-
-		</li>
-
-		<li class="py-3 col-12 col-sm-6 col-lg-4">
-			<div class="nav-tile">
-				<div class="nav-tile-outer border d-flex flex-column justify-content-center align-items-center p-3">
-
-					<i class="display-3 text-primary mb-3 icon icon-devices"></i>
-					<a class="h5 mb-0 stretched-link" href="#">Wyposażenie</a>
-				</div>
-			</div>
-
-		</li>
-
-		<li class="py-3 col-12 col-sm-6 col-lg-4">
-			<div class="nav-tile">
-				<div class="nav-tile-outer border d-flex flex-column justify-content-center align-items-center p-3">
-					<i class="display-3 text-primary mb-3 icon icon-supervisor_account"></i>
-					<a class="h5 mb-0 stretched-link" data-router href="/app/user/">Pracownicy</a>
-				</div>
-			</div>
-
-		</li>
-
+			</li>
+		{% endfor %}
 	</ul>
 </nav>

@@ -1,0 +1,49 @@
+<div class="container">
+	<a href="/app/user/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	{% if user %}
+		<div class="card">
+			<h5 class="card-header">
+				{{- user.firstName -}}
+				&nbsp;
+				{{- user.lastName -}}
+			</h5>
+			{% if user.description %}
+				<div class="card-body">
+					<p class="card-text">
+						{{ user.description }}
+					</p>
+				</div>
+			{% endif %}
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<h6 class="text-muted">
+						Adres email
+					</h6>
+					<div>
+						<a href="mailto:{{ user.email }}">
+							{{ user.email }}
+						</a>
+					</div>
+				</li>
+				<li class="list-group-item">
+					<h6 class="text-muted">
+						Nr telefonu
+					</h6>
+					<div>
+						<a href="tel:{{ user.phone | replace({' ': ''}) }}">
+							{{ user.phone }}
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	{% else %}
+		<div class="alert alert-info">
+			Brak użytkownika o podanym ID
+		</div>
+	{% endif %}
+
+</div>

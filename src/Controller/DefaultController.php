@@ -20,12 +20,16 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/app", name="main_view")
+     * @Route("/app/", name="main_view")
      */
     public function index()
     {
+        $user = $this->getUser();
+        $description = "Witaj, <strong>{$user->getFirstName()} {$user->getLastName()}</strong>. Poniżej znajdują się dostępne dla Ciebie widoki.";
+
         return $this->render('default/index.html.twig', [
-            'controller_name' => 'DefaultController',
+            'header_title' => 'Witaj w systemie rezerwacji miejsc pracy',
+            'view_block_name' => 'app_dashboard',
         ]);
     }
 }

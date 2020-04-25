@@ -9,6 +9,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "watch": "yarn encore dev --watch",
+        "serve": "yarn encore dev-server",
         "dev": "yarn encore dev",
         "build": "yarn encore production"
     },
@@ -16,6 +17,7 @@
     "license": "ISC",
     "devDependencies": {
         "@symfony/webpack-encore": "^0.29.1",
+        "core-js": "^3.6.5",
         "node-sass": "^4.13.1",
         "sass-loader": "^7.0.1",
         "twig-loader": "^0.5.3",
@@ -23,7 +25,9 @@
     },
     "dependencies": {
         "bootstrap": "^4.4.1",
+        "deparam.js": "^2.1.1",
         "jquery": "^3.5.0",
+        "jquery-validation": "^1.19.1",
         "jqueryrouter": "^2.2.8",
         "sass-local-fonts": "^1.0.0"
     }

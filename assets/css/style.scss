@@ -2,4 +2,8 @@
 @import "../../node_modules/sass-local-fonts/src/sass-local-fonts.scss";
 @import "./bootstrap";
 
+$icomoon-font-path: "../fonts";
+@import "./icomoon/style";
+
 @import "./login";
+@import "./common";

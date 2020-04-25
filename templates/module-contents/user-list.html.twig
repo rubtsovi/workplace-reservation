@@ -1,0 +1,55 @@
+<div class="container">
+	<a href="/app/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	{% if users | length %}
+		<div id="user-list" class="bs-grid-table">
+			<div class="row bs-grid-table-header d-none d-md-flex">
+
+				<div class="col-1 py-2 text-uppercase text-center">
+					Nr
+				</div>
+				<div class="col-11 col-md py-2 text-uppercase">
+					Imię i Nazwisko
+				</div>
+				<div class="col-11 offset-1 col-md-4 offset-md-0 py-2 text-uppercase">
+					Akcje
+				</div>
+			</div>
+			{% for user in users %}
+				<div class="row bs-grid-table-row align-items-center">
+					<div class="col-1 py-2 text-center">
+						{{ loop.index }}
+					</div>
+					<div class="col-11 col-md py-2">
+						{{- user.firstName -}}
+						&nbsp;
+						{{- user.lastName -}}
+					</div>
+					<div class="col-11 offset-1 col-md-4 offset-md-0 py-2">
+						<div class="btn-group">
+							<a href="/app/user/show/{{ user.id }}/" data-router class="btn btn-sm btn-success ">
+								<i class="icon icon-format_list_bulleted"></i>
+								Szczegóły
+							</a>
+							<button class="btn btn-sm btn-danger ">
+								<i class="icon icon-clear"></i>
+								Kasuj
+							</button>
+						</div>
+					</div>
+
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="alert alert-info">
+			Nie dodano żadnego pracownika.
+			<a href="/app/user/add/">
+				Dodaj
+			</a>
+		</div>
+	{% endif %}
+
+</div>

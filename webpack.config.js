@@ -11,11 +11,16 @@ Encore.setOutputPath("public/build/")
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
+    .autoProvidejQuery()
     .enableSourceMaps(Encore.isDev())
     .enableVersioning(Encore.isProduction())
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = "usage";
         config.corejs = 3;
+    })
+    .addLoader({
+        test: /\.twig$/,
+        loader: "twig-loader",
     })
     .enableSassLoader(() => {}, { resolveUrlLoader: false });
 

@@ -12,7 +12,14 @@
 		</small>
 	</div>
 	<div class="col-11 offset-1 col-md-2 offset-md-0 py-2">
-		Miejsce pracy
+		{% if equipment.workplace %}
+			<a data-router href="/app/workplace/show/{{ equipment.workplace.id }}/">
+				{{ equipment.workplace.signature }}
+			</a>
+		{% else %}
+			Nie przypisano
+		{% endif %}
+
 	</div>
 	<div class="col-11 offset-1 col-md-3 offset-md-0 py-2">
 		Akcje

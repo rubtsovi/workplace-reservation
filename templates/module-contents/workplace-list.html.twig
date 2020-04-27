@@ -1,0 +1,40 @@
+<div class="container">
+	<a href="/app/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	{% if workplaces.items | length %}
+		<div id="workplace-list" class="bs-grid-table">
+			<div class="row bs-grid-table-header d-none d-md-flex">
+				<div class="col-1 py-2 text-uppercase text-center">
+					Nr
+				</div>
+				<div class="col-11 col-md py-2 text-uppercase">
+					Oznaczenie
+				</div>
+				<div class="col-11 offset-1 col-md-4 offset-md-0 py-2 text-uppercase">
+					Akcje
+				</div>
+			</div>
+			{% for workplace in workplaces.items %}
+				{% include "../workplace/single-workplace-row.html.twig" %}
+			{% endfor %}
+		</div>
+		{% if workplaces.total_count > 10 %}
+			<div class="py-5 text-center">
+				<button data-next-page="{{ workplaces.current_page_number + 1 }}" class="show-more-workplaces rounded-pill btn btn-outline-secondary">
+					Pokaż więcej
+				</button>
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="alert alert-info">
+			Nie dodano żadnego miejsca pracy.&nbsp;
+			{% if is_adding_allowed %}
+				<a data-router href="/app/workplace/add/">
+					Dodaj
+				</a>
+			{% endif %}
+		</div>
+	{% endif %}
+</div>

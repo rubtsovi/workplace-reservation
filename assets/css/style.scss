@@ -2,6 +2,9 @@
 @import "../../node_modules/sass-local-fonts/src/sass-local-fonts.scss";
 @import "./bootstrap";
 
+@import "../../node_modules/select2/src/scss/core.scss";
+@import "../../node_modules/@ttskch/select2-bootstrap4-theme/src/layout.scss";
+
 $icomoon-font-path: "../fonts";
 @import "./icomoon/style";
 

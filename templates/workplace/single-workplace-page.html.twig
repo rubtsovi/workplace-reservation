@@ -1,0 +1,53 @@
+<div class="container">
+	<a href="/app/workplace/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	{% if workplace %}
+		<div class="card">
+			<h5 class="card-header">
+				Szczegóły miejsca pracy
+			</h5>
+			{% if workplace.description %}
+				<div class="card-body">
+					<p class="card-text">
+						{{ workplace.description }}
+					</p>
+				</div>
+			{% endif %}
+			{% if workplace.equipments %}
+				<div class="card-body pb-0">
+					<div class="card-subtitle h6 text-muted mb-0 text-uppercase">
+						Wyposażenie
+					</div>
+				</div>
+				<ul class="list-group list-group-flush">
+					{% for equipment in workplace.equipments %}
+						<li class="list-group-item">
+							{{- equipment.model -}}
+							&nbsp;
+							<small class="font-weight-bolder text-muted">
+								(
+								{{- equipment.signature -}}
+								)
+							</small>
+						</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<div class="card-body">
+					<div class="card-subtitle h6 text-muted mb-0">
+						Miejsce jeszcze nie jest wyposażone
+					</div>
+				</div>
+			{% endif %}
+
+
+		</div>
+	{% else %}
+		<div class="alert alert-info">
+			Brak miejsca pracy o podanym ID
+		</div>
+	{% endif %}
+
+</div>

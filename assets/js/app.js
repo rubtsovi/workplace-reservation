@@ -6,4 +6,7 @@ import "../css/style.scss";
 import "jquery-validation";
 import "jquery-validation/dist/additional-methods";
 import "jquery-validation/dist/localization/messages_pl";
+import "select2";
+
+import "./show-more-buttons";
 import "./routing";

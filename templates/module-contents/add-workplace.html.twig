@@ -1,0 +1,72 @@
+<div class="container">
+	<a href="/app/workplace/" data-router class="btn btn-primary rounded-pill mb-5">
+		<i class="icon icon-reply"></i>
+		Cofnij
+	</a>
+	<form data-after-success-url="/app/workplace/" id="add-workplace-form" class="needs-validation" action="{% if workplace is defined %}/app/api/edit-workplace/{{ workplace.id }}/{% else %}/app/api/create-workplace/{% endif %}">
+		<div class="form-group row">
+			<label for="signature-input" class="col-sm-3 col-form-label">
+				Oznaczenie
+			</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" name="signature" id="signature-input" {% if workplace is defined %} value="{{ workplace.signature }}" {% endif %}>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="equipment-input" class="col-sm-3 col-form-label">
+				Wyposażenie
+			</label>
+			<div class="col-sm-9">
+				<select class="form-control select2" id="equipment-input" name="equipment[]" multiple="multiple">
+					{% if equipment | length %}
+						{% for group, items in equipment %}
+							<optgroup label="{{ group }}">
+								{% for item in items %}
+									{% if workplace is defined %}
+										<option value="{{ item.id }}" {% if item.workplace %} {% if item.workplace.id == workplace.id %} selected {% else %} disabled {% endif %} {% endif %}>
+											{{- item.model -}}
+											&nbsp;(
+											{{- item.signature -}}
+											)
+										</option>
+									{% else %}
+										<option value="{{ item.id }}" {% if item.workplace %} disbaled {% endif %}>
+											{{- item.model -}}
+											&nbsp;(
+											{{- item.signature -}}
+											)
+										</option>
+									{% endif %}
+								{% endfor %}
+							</optgroup>
+						{% endfor %}
+					{% endif %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="description-input" class="col-sm-3 col-form-label">
+				Opis
+			</label>
+			<div class="col-sm-9">
+				<textarea name="description" id="description-input" class="form-control" rows="5">
+					{%- if workplace is defined -%}
+						{{- workplace.description -}}
+					{%- endif %}
+				</textarea>
+			</div>
+		</div>
+		{% if workplace is defined %}
+			<button class="btn btn-primary rounded-pill" id="submit-btn">
+				<i class="icon icon-check"></i>
+				Zapisz
+			</button>
+		{% else %}
+			<button class="btn btn-primary rounded-pill" id="submit-btn">
+				<i class="icon icon-add"></i>
+				Dodaj
+			</button>
+		{% endif %}
+
+	</form>
+</div>

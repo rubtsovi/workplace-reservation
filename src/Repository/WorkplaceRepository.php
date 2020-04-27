@@ -19,6 +19,13 @@ class WorkplaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Workplace::class);
     }
 
+    public function findAllQuery()
+    {
+        $qb = $this->createQueryBuilder('eq');
+
+        return $qb->getQuery();
+    }
+
     // /**
     //  * @return Workplace[] Returns an array of Workplace objects
     //  */

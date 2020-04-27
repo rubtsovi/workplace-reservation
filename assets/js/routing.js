@@ -1,7 +1,12 @@
 import { route, router } from "jqueryrouter";
 import BodyElementsControl from "./body-elements-control";
 import * as Templates from "./templates";
-import { userFormRules, commonValidatorSettings, equipmentFormRules } from "./forms-rules";
+import {
+    userFormRules,
+    commonValidatorSettings,
+    equipmentFormRules,
+    workplaceFormRules,
+} from "./forms-rules";
 
 let routerLinks = $("a[data-router]");
 const $routerOutlet = $("#router-outlet");
@@ -118,6 +123,143 @@ route("/app/equipment/add/", () => {
     BodyElementsControl.hideLoader();
 });
 
+route("/app/workplace/", ({ route }) => {
+    BodyElementsControl.showLoader();
+    fetch("/app/api/get-workplace-list/", {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((res) => {
+            if (!res.ok) {
+                throw res.text();
+            }
+            return res.json();
+        })
+        .then((data) => {
+            BodyElementsControl.hideLoader();
+            BodyElementsControl.setHeaderText("Wyposażenie");
+            BodyElementsControl.clearDescription();
+            $routerOutlet.html(
+                Templates.workplaceList({
+                    workplaces: data.workplaces,
+                    is_adding_allowed: data.isAddingAllowed,
+                })
+            );
+            if (data.isAddingAllowed) {
+                BodyElementsControl.showAddBtn(`${route}add/`);
+            }
+        })
+        .catch((e) => {
+            e.then((err) => {
+                BodyElementsControl.addAppMessage("error", err);
+                router.set("/app/");
+            });
+        });
+});
+
+route("/app/workplace/add/", () => {
+    BodyElementsControl.hideAddBtn();
+    BodyElementsControl.showLoader();
+    BodyElementsControl.clearDescription();
+    fetch("/app/api/get-grouped-equipment/", {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+            console.log(data);
+            $routerOutlet.html(Templates.workplaceAdd({ equipment: data }));
+            $(".select2").select2({
+                theme: "bootstrap4",
+                placeholder: "Dodaj wyposażenie",
+            });
+            $("#add-workplace-form").validate(
+                Object.assign({}, workplaceFormRules, commonValidatorSettings)
+            );
+            BodyElementsControl.hideLoader();
+        });
+});
+
+route("/app/workplace/show/:workplaceId/", ({}, { workplaceId }) => {
+    BodyElementsControl.showLoader();
+    BodyElementsControl.hideAddBtn();
+    fetch(`/app/api/get-workplace/${workplaceId}/`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((res) => {
+            if (!res.ok) {
+                throw res.text();
+            }
+
+            return res.json();
+        })
+        .then((data) => {
+            const workplace = data.workplace;
+            BodyElementsControl.hideLoader();
+            BodyElementsControl.setHeaderText(workplace.signature);
+            BodyElementsControl.clearDescription();
+            $routerOutlet.html(Templates.singleWorkplace({ workplace }));
+        })
+        .catch((e) => {
+            e.then((err) => {
+                BodyElementsControl.addAppMessage("error", err);
+                router.set("/app/");
+            });
+        });
+});
+
+route("/app/workplace/edit/:workplaceId/", ({}, { workplaceId }) => {
+    BodyElementsControl.showLoader();
+    BodyElementsControl.hideAddBtn();
+    fetch(`/app/api/get-workplace/${workplaceId}/`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((res) => {
+            if (!res.ok) {
+                throw res.text();
+            }
+
+            return res.json();
+        })
+        .then((data) => {
+            const workplace = data.workplace;
+            BodyElementsControl.hideLoader();
+            BodyElementsControl.setHeaderText(workplace.signature);
+            BodyElementsControl.clearDescription();
+            $routerOutlet.html(Templates.workplaceAdd({ workplace, equipment: data.equipment }));
+            $(".select2").select2({
+                theme: "bootstrap4",
+                placeholder: "Dodaj wyposażenie",
+            });
+            $("#add-workplace-form").validate(
+                Object.assign({}, workplaceFormRules, commonValidatorSettings)
+            );
+        })
+        .catch((e) => {
+            console.log(e);
+            e.then((err) => {
+                BodyElementsControl.addAppMessage("error", err);
+                router.set("/app/");
+            });
+        });
+});
+
 route("/app/", () => {
     BodyElementsControl.hideAddBtn();
     BodyElementsControl.showLoader();
@@ -152,46 +294,4 @@ $("body").on("click", "a[data-router]", (e) => {
     const $target = $(e.currentTarget);
     const path = $target.attr("href");
     router.set(path);
-});
-
-$("body").on("click", ".show-more-equipments", (e) => {
-    BodyElementsControl.showLoader();
-    const btn = e.currentTarget;
-    const nextPage = btn.dataset.nextPage;
-    const url = new URL("/app/api/get-equipment-list/", window.location.origin);
-    url.searchParams.append("page", nextPage);
-    fetch(url.pathname + url.search, {
-        method: "get",
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-        },
-    })
-        .then((res) => {
-            if (!res.ok) {
-                throw res.text();
-            }
-
-            return res.json();
-        })
-        .then((data) => {
-            const equipments = data.items;
-            const $equipmentList = $("#equipment-list");
-            let lastId = parseInt($equipmentList.children().last().children(".id-col").text());
-            equipments.forEach((equipment) => {
-                $equipmentList.append(Templates.singleEquipmentRow({ equipment, id: ++lastId }));
-            });
-            if (data.total_count < data.current_page_number * data.num_items_per_page) {
-                $(btn).fadeOut("slow", function () {
-                    $(this).parent().remove();
-                });
-            } else {
-                btn.dataset.nextPage = data.current_page_number + 1;
-            }
-            BodyElementsControl.hideLoader();
-        })
-        .catch((e) => {
-            e.then((e) => {
-                console.log(e);
-            });
-        });
 });

@@ -56,7 +56,7 @@ class DefaultController extends AbstractController
             (new ModuleLink())
                 ->setTitle('Miejsca pracy')
                 ->setIcon('apps')
-                ->setUrl('#')
+                ->setUrl($this->generateUrl('workplace_list'))
                 ->setRole(User::USER)
         );
         $links->add(

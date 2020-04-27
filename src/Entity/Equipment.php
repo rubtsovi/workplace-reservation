@@ -139,4 +139,9 @@ class Equipment
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getModel() . " (" . $this->getSignature() . ")";
+    }
 }

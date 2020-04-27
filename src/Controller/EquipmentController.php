@@ -49,6 +49,24 @@ class EquipmentController extends AbstractController
     }
 
     /**
+     * @Route("/api/get-grouped-equipment/")
+     */
+    public function getEquipmentListGroupedByType(Request $request, SerializerInterface $serializer)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            $this->createAccessDeniedException();
+        }
+
+        $equipments = $this->getDoctrine()->getRepository(Equipment::class)->findAll();
+        $equipmentTypes = [];
+        foreach ($equipments as $equipment) {
+            $equipmentTypes[$equipment->getType()][] = $equipment;
+        }
+
+        return new Response($serializer->serialize($equipmentTypes, 'json'));
+    }
+
+    /**
      * @Route("/api/create-equipment/")
      */
     public function AddEquipment(Request $request)

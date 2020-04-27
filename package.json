@@ -24,11 +24,13 @@
         "webpack-notifier": "^1.6.0"
     },
     "dependencies": {
+        "@ttskch/select2-bootstrap4-theme": "^1.4.0",
         "bootstrap": "^4.4.1",
         "deparam.js": "^2.1.1",
         "jquery": "^3.5.0",
         "jquery-validation": "^1.19.1",
         "jqueryrouter": "^2.2.8",
-        "sass-local-fonts": "^1.0.0"
+        "sass-local-fonts": "^1.0.0",
+        "select2": "^4.0.13"
     }
 }

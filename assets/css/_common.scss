@@ -63,3 +63,13 @@ input.form-control,
 .input-group-text {
     border-radius: 50rem;
 }
+
+.select2-results__option[aria-disabled="true"] {
+    background-color: darken($light, 10%);
+    &:after {
+        content: "(Zarezerwowane)";
+        font-size: 80%;
+        color: $text-muted;
+        font-weight: $font-weight-bolder;
+    }
+}

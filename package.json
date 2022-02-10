@@ -18,7 +18,7 @@
     "devDependencies": {
         "@symfony/webpack-encore": "^0.29.1",
         "core-js": "^3.6.5",
-        "node-sass": "^4.13.1",
+        "node-sass": "^7.0.0",
         "sass-loader": "^7.0.1",
         "twig-loader": "^0.5.3",
         "webpack-notifier": "^1.6.0"
